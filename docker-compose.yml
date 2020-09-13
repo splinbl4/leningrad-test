@@ -1,0 +1,58 @@
+version: "3.7"
+services:
+  leningrad-nginx:
+    build:
+      context: docker
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - ./:/app
+    depends_on:
+      - leningrad-php-fpm
+    ports:
+      - "8080:80"
+
+  leningrad-php-fpm:
+    build:
+      context: docker
+      dockerfile: php-fpm/Dockerfile
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      PHP_IDE_CONFIG: serverName=API
+    volumes:
+      - ./:/app
+
+  leningrad-php-cli:
+    build:
+      context: docker
+      dockerfile: php-cli/Dockerfile
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      PHP_IDE_CONFIG: serverName=API
+    volumes:
+      - ./:/app
+
+#  leningrad-postgres:
+#    image: postgres:11.2-alpine
+#    volumes:
+#      - leningrad-postgres:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_USER: leningrad
+#      POSTGRES_PASSWORD: secret
+#      POSTGRES_DB: leningrad
+#    ports:
+#      - "54321:5432"
+
+  leningrad-mongo:
+    image: mongo:3.6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: leningrad
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - 27017:27017
+    volumes:
+      - leningrad-mongo:/data/db
+
+volumes:
+  leningrad-mongo:

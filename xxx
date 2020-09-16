@@ -1,0 +1,38 @@
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+type Query {
+    matches(fromDate: Date!, toDate: Date!): [Match!]!
+    match(id: ID!): Match
+}
+
+type Mutation {
+    changeStatus(matchId: Integer, status: Integer): Match
+    changeScore(matchId: Integer, playerId: Integer): Match
+}
+
+type Match {
+    id: ID!
+    match_date: Date!
+    result_score: String!
+    name: String!
+    status: String!
+    tournament: Tournament!
+    teams: [Team!]!
+}
+
+type Tournament {
+    id: ID!
+    name: String!
+}
+
+type Team {
+    id: ID!
+    name: String!
+    players: [Player!]!
+}
+
+type Player {
+    id: ID!
+    name: String!
+}

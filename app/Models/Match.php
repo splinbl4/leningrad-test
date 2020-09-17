@@ -55,7 +55,7 @@ class Match extends Model
 
     public function tournament(): BelongsTo
     {
-        return $this->belongsTo(Tournament::class, 'tournament_id', 'id');
+        return $this->belongsTo(Tournament::class);
     }
 
     /**
